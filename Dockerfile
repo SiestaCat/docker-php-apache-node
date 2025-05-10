@@ -81,6 +81,8 @@ RUN chown -R www-data:www-data /var/www
 
 USER www-data
 
+WORKDIR /var/www/html
+
 # Install composer
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -92,9 +94,17 @@ EXPOSE 80
 # Copy the Supervisord configuration file into the container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Copy entrypoint
+
+COPY --chown=www-data:www-data entrypoint.sh ./
+
 # Override apache CMD, now will be supervisord
 
 ENTRYPOINT ["bash", "entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
-RUN mkdir -p /var/www/html/public
+RUN mkdir -p ./public
+
+# Remove \r
+
+RUN dos2unix entrypoint.sh
