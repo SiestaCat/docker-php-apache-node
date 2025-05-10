@@ -1,5 +1,7 @@
 # php-apache-node Docker Image
 
+Github repository: https://github.com/SiestaCat/docker-php-apache-node
+
 A custom Docker image bundling PHP, Apache and Node.js for modern web applications.
 
 ## Features
@@ -16,25 +18,24 @@ A custom Docker image bundling PHP, Apache and Node.js for modern web applicatio
 
 ## Usage
 
-Pull the latest image:
+### Pull the latest image
 ```bash
 docker pull siestacat/php-apache-node:latest
 ```
 
-Use in your `Dockerfile`:
+### Base image in your Dockerfile
 ```dockerfile
 FROM siestacat/php-apache-node:latest
 ```
 
-Or as a build stage:
+### As a multi-stage build
 ```dockerfile
 FROM siestacat/php-apache-node:latest AS base
 ```
 
 ## Building Locally
-
 ```bash
-git clone <your-repo-url>  
+git clone https://github.com/SiestaCat/docker-php-apache-node.git  
 cd docker-php-apache-node  
 docker build \
   --file Dockerfile \
@@ -52,4 +53,4 @@ docker build \
 
 1. Fork the repository  
 2. Create a feature branch  
-3. Submit a pull request  
+3. Submit a pull request
