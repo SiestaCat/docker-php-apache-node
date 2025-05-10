@@ -84,3 +84,17 @@ USER www-data
 # Install composer
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Expose apache port
+
+EXPOSE 80
+
+# Copy the Supervisord configuration file into the container
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Override apache CMD, now will be supervisord
+
+ENTRYPOINT ["bash", "entrypoint.sh"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
+RUN mkdir -p /var/www/html/public
