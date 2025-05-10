@@ -40,6 +40,11 @@ cd docker-php-apache-node
 docker build  --file Dockerfile  --tag siestacat/php-apache-node:latest  --progress=plain .
 ```
 
+### Push to Docker Hub
+```bash
+docker push siestacat/php-apache-node:latest
+```
+
 ## Configuration
 
 - Entrypoint script: [`entrypoint.sh`](entrypoint.sh)  
