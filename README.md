@@ -37,11 +37,7 @@ FROM siestacat/php-apache-node:latest AS base
 ```bash
 git clone https://github.com/SiestaCat/docker-php-apache-node.git  
 cd docker-php-apache-node  
-docker build \
-  --file Dockerfile \
-  --tag siestacat/php-apache-node:latest \
-  --progress=plain \
-  .
+docker build  --file Dockerfile  --tag siestacat/php-apache-node:latest  --progress=plain .
 ```
 
 ## Configuration
