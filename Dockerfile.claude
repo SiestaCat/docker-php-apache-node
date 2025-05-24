@@ -1,4 +1,7 @@
 FROM siestacat/php-apache-node:latest
 
+ENV NPM_CONFIG_PREFIX=/var/www/.npm-global
+ENV PATH=$NPM_CONFIG_PREFIX/bin:$PATH
+
 RUN npm install -g @anthropic-ai/claude-code
 RUN npm update -g
