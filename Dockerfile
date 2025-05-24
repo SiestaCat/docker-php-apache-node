@@ -4,6 +4,10 @@ FROM php:8.4.7-apache
 
 USER root
 
+# Set chown
+
+RUN chown -R www-data:www-data /var/www
+
 # Install dependencies
 
 RUN apt-get update -yqq && \
@@ -63,7 +67,7 @@ USER www-data
 
 # Set npm home
 
-RUN mkdir -p ~/.npm-global
+RUN mkdir -p /var/www/.npm-global
 RUN npm config set prefix "$HOME/.npm-global"
 ENV PATH=/home/node/.npm-global/bin:$PATH
 
@@ -92,10 +96,6 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 # This step overrides the default configuration to set the new document root
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# Change permissions
-
-RUN chown -R www-data:www-data /var/www
 
 # Switch to www-data
 
