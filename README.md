@@ -23,9 +23,19 @@ A custom Docker image bundling PHP, Apache and Node.js for modern web applicatio
 docker pull siestacat/php-apache-node:latest
 ```
 
+### Pull the Claude variant
+```bash
+docker pull siestacat/php-apache-node:claude
+```
+
 ### Base image in your Dockerfile
 ```dockerfile
 FROM siestacat/php-apache-node:latest
+```
+
+### Base image for the Claude variant
+```dockerfile
+FROM siestacat/php-apache-node:claude
 ```
 
 ### As a multi-stage build
@@ -33,16 +43,32 @@ FROM siestacat/php-apache-node:latest
 FROM siestacat/php-apache-node:latest AS base
 ```
 
+### As a multi-stage build (Claude variant)
+```dockerfile
+FROM siestacat/php-apache-node:claude AS base
+```
+
 ## Building Locally
+
 ```bash
-git clone https://github.com/SiestaCat/docker-php-apache-node.git  
-cd docker-php-apache-node  
+git clone https://github.com/SiestaCat/docker-php-apache-node.git
+cd docker-php-apache-node
+
+# build 'latest'
 docker build  --file Dockerfile  --tag siestacat/php-apache-node:latest  --progress=plain .
+
+# build 'claude'
+docker build --file Dockerfile.claude --tag siestacat/php-apache-node:claude --progress=plain .
 ```
 
 ### Push to Docker Hub
+
 ```bash
+# push 'latest'
 docker push siestacat/php-apache-node:latest
+
+# push 'claude'
+docker push siestacat/php-apache-node:claude
 ```
 
 ## Configuration

@@ -1,0 +1,4 @@
+FROM siestacat/php-apache-node:latest
+
+RUN npm install -g @anthropic-ai/claude-code
+RUN npm update -g
