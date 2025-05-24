@@ -10,6 +10,8 @@ RUN chown -R www-data:www-data /var/www
 
 # Install dependencies
 
+RUN curl -fsSL https://deb.nodesource.com/setup_24.x | bash -
+
 RUN apt-get update -yqq && \
     apt-get install --no-install-recommends -yqq \
     software-properties-common \
@@ -32,7 +34,31 @@ RUN apt-get update -yqq && \
     libaio1 \
     inetutils-ping \
     libldap2-dev \
+    nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Npm update
+
+RUN npm cache clean --force
+RUN npm install -g npm@latest
+RUN npm update -g
+
+# Switch to www-data to config npm
+
+USER www-data
+
+RUN mkdir -p ~/.local
+RUN npm config set prefix '~/.local/'
+RUN mkdir -p ~/.local/bin && echo 'export PATH="$HOME/.local/bin/:$PATH"' >> ~/.bashrc
+
+# Show up the node, npm and yarn version name
+
+RUN echo "Node version: $(node -v)"
+RUN echo "Npm version: $(npm -v)"
+
+# Switch back to root
+
+USER root
 
 # Pecl channel update
 
@@ -43,48 +69,6 @@ RUN pecl channel-update pecl.php.net
 RUN pecl install apcu xdebug redis && \
     docker-php-ext-install ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql && \
     docker-php-ext-enable apcu xdebug ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql redis
-
-# Install NPM using NVM
-
-ENV NVM_DIR=/usr/local/nvm
-ENV NODE_VERSION=v24.1.0
-
-RUN mkdir -p $NVM_DIR \
- && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
- && . $NVM_DIR/nvm.sh \
- && nvm install $NODE_VERSION \
- && nvm use $NODE_VERSION \
- && nvm alias default $NODE_VERSION \
- && echo 'export NVM_DIR="$NVM_DIR"' >> /etc/bash.bashrc \
- && echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /etc/bash.bashrc \
- && echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /etc/bash.bashrc
-
-ENV PATH=$NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH
-
-# Switch to local user
-
-USER www-data
-
-# Set npm home
-
-RUN mkdir -p /var/www/.npm-global
-RUN npm config set prefix "$HOME/.npm-global"
-ENV PATH=/home/node/.npm-global/bin:$PATH
-
-# Npm update
-
-RUN npm cache clean --force
-RUN npm install -g npm@latest
-RUN npm update -g
-
-# Switch back to root
-
-USER root
-
-# Show up the node, npm and yarn version name
-
-RUN echo "Node version: $(node -v)"
-RUN echo "Npm version: $(npm -v)"
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
