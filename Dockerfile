@@ -35,6 +35,7 @@ RUN apt-get update -yqq && \
     inetutils-ping \
     libldap2-dev \
     nodejs \
+    ripgrep \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Npm update
