@@ -1,5 +1,14 @@
 FROM siestacat/php-apache-node:latest
 
+USER root
+
+RUN apt-get update -yqq && \
+    apt-get install --no-install-recommends -yqq \
+    ripgrep \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+USER www-data
+
 ENV NPM_CONFIG_PREFIX=/var/www/.npm-global
 ENV PATH=$NPM_CONFIG_PREFIX/bin:$PATH
 
