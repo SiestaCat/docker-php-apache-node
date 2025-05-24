@@ -43,7 +43,7 @@ RUN pecl install apcu xdebug redis && \
 # Install NPM using NVM
 
 ENV NVM_DIR=/usr/local/nvm
-ENV NODE_VERSION=v20.16.0
+ENV NODE_VERSION=v24.1.0
 
 RUN mkdir -p $NVM_DIR \
  && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
@@ -56,6 +56,26 @@ RUN mkdir -p $NVM_DIR \
  && echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /etc/bash.bashrc
 
 ENV PATH=$NVM_DIR/versions/node/$NODE_VERSION/bin:$PATH
+
+# Switch to local user
+
+USER www-data
+
+# Set npm home
+
+RUN mkdir -p ~/.npm-global
+RUN npm config set prefix "$HOME/.npm-global"
+ENV PATH=/home/node/.npm-global/bin:$PATH
+
+# Npm update
+
+RUN npm cache clean --force
+RUN npm install -g npm@latest
+RUN npm update -g
+
+# Switch back to root
+
+USER root
 
 # Show up the node, npm and yarn version name
 
