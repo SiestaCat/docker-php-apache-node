@@ -67,10 +67,9 @@ RUN pecl channel-update pecl.php.net
 
 # Install PHP extensions
 
-RUN pecl install apcu xdebug redis && \
-    docker-php-ext-install ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql && \
-    docker-php-ext-enable apcu xdebug ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql redis && \
-    docker-php-ext-disable intl xdebug
+RUN pecl install apcu redis && \
+    docker-php-ext-install ldap bcmath opcache sockets curl bz2 xml zip pdo pdo_mysql && \
+    docker-php-ext-enable apcu ldap bcmath opcache sockets curl bz2 xml zip pdo pdo_mysql redis
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
