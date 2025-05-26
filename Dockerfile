@@ -69,7 +69,7 @@ RUN pecl channel-update pecl.php.net
 
 RUN pecl install apcu xdebug redis && \
     docker-php-ext-install ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql && \
-    docker-php-ext-enable apcu xdebug ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql redis \
+    docker-php-ext-enable apcu xdebug ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql redis && \
     docker-php-ext-disable intl xdebug
 
 # Enable Apache mod_rewrite
@@ -82,10 +82,14 @@ ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 # This step overrides the default configuration to set the new document root
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN sed -i 's/LogLevel warn/LogLevel debug/' /etc/apache2/apache2.conf
 
 # give www-data a valid login shell
 
 RUN usermod --shell /bin/bash www-data
+
+# Configure Symfony to log to stderr in dev/prod
+ENV SHELL_VERBOSITY=3
 
 # Switch to www-data
 
