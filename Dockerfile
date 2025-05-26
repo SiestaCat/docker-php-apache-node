@@ -1,4 +1,4 @@
-FROM php:8.4.7-apache
+FROM php:8.4.8RC1-apache-bookworm
 
 # Switch to root
 
@@ -69,7 +69,8 @@ RUN pecl channel-update pecl.php.net
 
 RUN pecl install apcu xdebug redis && \
     docker-php-ext-install ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql && \
-    docker-php-ext-enable apcu xdebug ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql redis
+    docker-php-ext-enable apcu xdebug ldap bcmath opcache sockets curl bz2 intl xml zip pdo pdo_mysql redis \
+    docker-php-ext-disable intl xdebug
 
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
