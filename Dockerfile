@@ -83,6 +83,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 RUN sed -i 's/LogLevel warn/LogLevel debug/' /etc/apache2/apache2.conf
 
+RUN printf '\nEnableSendfile Off\nEnableMMAP Off\n' >> /etc/apache2/apache2.conf
+
 # give www-data a valid login shell
 
 RUN usermod --shell /bin/bash www-data
