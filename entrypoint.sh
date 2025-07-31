@@ -8,10 +8,10 @@ fi
 service cron start
 
 if [ -f /var/www/html/.crontab.prod.txt ]; then
-  echo "Cargando crontab de www-data desde .crontab.prod.txt"
+  echo "Loading crontab for www-data from .crontab.prod.txt"
   crontab -u www-data /var/www/html/.crontab.prod.txt
 else
-  echo "No se encontró .crontab.prod.txt; omitiendo instalación de crontab"
+  echo "Could not find .crontab.prod.txt; skipping crontab installation"
 fi
 
 # Then exec the container's main process (e.g., Supervisord)
