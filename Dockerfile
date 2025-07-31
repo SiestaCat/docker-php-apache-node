@@ -36,6 +36,7 @@ RUN apt-get update -yqq && \
     libldap2-dev \
     nodejs \
     ripgrep \
+    cron \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Npm update
