@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "==== ENTRYPOINT docker-php-apache-node ===="
+
 # Run .release.sh only if it exists
 if [ -f ".release.sh" ]; then
   sh .release.sh
