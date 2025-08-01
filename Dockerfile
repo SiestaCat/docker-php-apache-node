@@ -37,6 +37,7 @@ RUN apt-get update -yqq && \
     nodejs \
     ripgrep \
     cron \
+    sudo \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Npm update
@@ -87,6 +88,9 @@ RUN sed -i 's/LogLevel warn/LogLevel debug/' /etc/apache2/apache2.conf
 # give www-data a valid login shell
 
 RUN usermod --shell /bin/bash www-data
+
+# Allow www-data to restart cron service (fix for cron startup issue)
+RUN echo "www-data ALL=(root) NOPASSWD: /usr/sbin/service cron restart, /usr/sbin/service cron start, /usr/sbin/service cron stop, /usr/sbin/service cron status" >> /etc/sudoers
 
 # Configure Symfony to log to stderr in dev/prod
 ENV SHELL_VERBOSITY=3

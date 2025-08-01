@@ -3,7 +3,13 @@
 echo "==== ENTRYPOINT docker-php-apache-node ===="
 
 # Always start cron service
-service cron start
+sudo service cron start
+
+# Fix cron startup issue
+if ! sudo service cron status >/dev/null 2>&1; then
+  sleep 2
+  sudo service cron restart
+fi
 
 # Only load crontab if APP_ENV is set
 if [ ! -z "$APP_ENV" ]; then
@@ -19,6 +25,9 @@ if [ ! -z "$APP_ENV" ]; then
 else
   echo "APP_ENV not set; skipping crontab installation"
 fi
+
+sleep 2
+sudo service cron restart
 
 # Run .release.sh only if it exists
 if [ -f ".release.sh" ]; then
