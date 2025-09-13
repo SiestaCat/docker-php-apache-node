@@ -1,4 +1,4 @@
-FROM php:8.4.8RC1-apache-bookworm
+FROM php:8.4.12RC1-apache-bookworm
 
 # Switch to root
 
