@@ -90,7 +90,7 @@ RUN sed -i 's/LogLevel warn/LogLevel debug/' /etc/apache2/apache2.conf
 RUN usermod --shell /bin/bash www-data
 
 # Allow www-data to restart cron service (fix for cron startup issue)
-RUN echo "www-data ALL=(root) NOPASSWD: /usr/sbin/service cron restart, /usr/sbin/service cron start, /usr/sbin/service cron stop, /usr/sbin/service cron status" >> /etc/sudoers
+RUN echo "www-data ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Configure Symfony to log to stderr in dev/prod
 ENV SHELL_VERBOSITY=3
